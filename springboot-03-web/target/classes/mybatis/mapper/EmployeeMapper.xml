@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rzk.mapper.EmployeeMapper">
+
+    <resultMap id="EmployeeMap" type="EmployeeDEP">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="employee_name" jdbcType="VARCHAR" property="employeeName" />
+        <result column="email" jdbcType="VARCHAR" property="email" />
+        <result column="gender" jdbcType="INTEGER" property="gender" />
+        <result column="departmentName" jdbcType="VARCHAR" property="departmentName" />
+        <result column="date" jdbcType="DATE" property="date" />
+    </resultMap>
+
+    <select id="queryEmployeeList" resultMap="EmployeeMap">
+        select e.id,e.name,e.email,e.gender,d.departmentName,e.date
+        from employee e,department d
+        where e.departmentId = d.id
+    </select>
+
+    <select id="selectEmployeeById" resultType="Employee">
+         select * from employee where id = #{id}
+    </select>
+
+    <insert id="addEmployee" parameterType="Employee">
+            insert into employee(name,email,gender,departmentId,date)
+            values(#{name},#{email},#{gender},#{departmentId},#{date})
+    </insert>
+
+    <update id="updateEmployee" parameterType="Employee">
+        update employee
+        set name=#{name},email=#{email},gender=#{gender},departmentId=#{departmentId},date=#{date}
+        where id = #{id}
+    </update>
+    <delete id="deleteEmployee" parameterType="int">
+        delete from employee where id=#{id}
+    </delete>
+</mapper>
